@@ -1,5 +1,4 @@
 import type { StrapiProject } from "@/lib/strapi";
-import { strapiMediaUrl } from "@/lib/strapi";
 
 export default function ProjectCard({
   project,
@@ -18,7 +17,7 @@ export default function ProjectCard({
         {project.thumbnail ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={strapiMediaUrl(project.thumbnail.url)}
+            src={project.thumbnail.url}
             alt={project.name}
             className="w-full object-cover"
           />
