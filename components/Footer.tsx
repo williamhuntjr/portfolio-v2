@@ -2,6 +2,17 @@ export default function Footer() {
   return (
     <footer className="flex items-center justify-center gap-10 border-t border-border bg-background py-10">
       <a
+        href="/William_Hunt_Resume-Latest.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Resume"
+        className="text-ink transition-colors hover:text-accent"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+        </svg>
+      </a>
+      <a
         href="https://github.com/williamhuntjr"
         target="_blank"
         rel="noopener noreferrer"

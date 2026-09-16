@@ -46,6 +46,15 @@ export default function AboutIntro() {
             a Next.js ordering app.
           </p>
         </div>
+
+        <a
+          href="/William_Hunt_Resume-Latest.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex h-12 w-fit items-center justify-center rounded-btn bg-accent px-6.5 text-[15px] font-bold text-white mt-2"
+        >
+          Download My Resume
+        </a>
       </div>
     </section>
   );
