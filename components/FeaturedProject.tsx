@@ -19,7 +19,7 @@ export default async function FeaturedProject() {
             <img
               src={strapiMediaUrl(project.thumbnail.url)}
               alt={project.name}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain"
             />
           ) : (
             <svg
@@ -42,7 +42,7 @@ export default async function FeaturedProject() {
             {project.name}
           </h3>
           {project.subtitle && (
-            <span className="text-sm font-bold text-accent">
+            <span className="text-sm font-bold tracking-wide text-accent uppercase">
               {project.subtitle}
             </span>
           )}
