@@ -1,10 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProjectFilters from "@/components/ProjectFilters";
 import ProjectCard from "@/components/ProjectCard";
 import ProjectPagination from "@/components/ProjectPagination";
-import type { StrapiProject } from "@/lib/strapi";
+import type { ProjectsResponse, StrapiProject } from "@/lib/strapi";
+
+function queryKey(page: number, technologies: string[]) {
+  return `${page}|${technologies.join(",")}`;
+}
 
 function ProjectCardSkeleton() {
   return (
@@ -27,15 +31,29 @@ function ProjectCardSkeleton() {
   );
 }
 
-export default function MyProjectsView() {
+export default function MyProjectsView({
+  initialData,
+}: {
+  initialData: ProjectsResponse | null;
+}) {
   const [page, setPage] = useState(1);
   const [selectedTech, setSelectedTech] = useState<string[]>([]);
-  const [projects, setProjects] = useState<StrapiProject[]>([]);
-  const [pageCount, setPageCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<StrapiProject[]>(
+    initialData?.data ?? [],
+  );
+  const [pageCount, setPageCount] = useState(
+    initialData?.meta?.pagination?.pageCount ?? 0,
+  );
+  const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState(false);
+  // Key of the page/filter combination currently shown, so the effect skips
+  // refetching what the server already rendered.
+  const loadedKey = useRef<string | null>(initialData ? queryKey(1, []) : null);
 
   useEffect(() => {
+    const key = queryKey(page, selectedTech);
+    if (key === loadedKey.current) return;
+
     const controller = new AbortController();
 
     async function load() {
@@ -53,6 +71,7 @@ export default function MyProjectsView() {
         const json = await res.json();
         setProjects(json.data ?? []);
         setPageCount(json.meta?.pagination?.pageCount ?? 0);
+        loadedKey.current = key;
       } catch (err) {
         if ((err as Error).name !== "AbortError") setError(true);
       } finally {

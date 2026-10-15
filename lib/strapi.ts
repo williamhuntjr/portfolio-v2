@@ -46,6 +46,17 @@ export function strapiMediaUrl(path: string) {
   return `${STRAPI_URL}${path}`;
 }
 
+// Resolve thumbnail URLs server-side, where STRAPI_URL is actually available —
+// client components that render these projects never have it.
+export function resolveThumbnails(projects: StrapiProject[]): StrapiProject[] {
+  return projects.map((project) => ({
+    ...project,
+    thumbnail: project.thumbnail
+      ? { ...project.thumbnail, url: strapiMediaUrl(project.thumbnail.url) }
+      : null,
+  }));
+}
+
 export async function fetchProjects({
   page = 1,
   pageSize = 6,
