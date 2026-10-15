@@ -19,3 +19,10 @@ export const TECH_OPTIONS = [
   "React",
   "WordPress",
 ];
+
+export const NAV_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/my-projects", label: "My Projects" },
+  { href: "/lets-connect", label: "Let's Connect" },
+];

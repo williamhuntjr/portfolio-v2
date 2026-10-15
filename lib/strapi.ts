@@ -17,6 +17,10 @@ export interface StrapiProject {
   subtitle: string | null;
   description: string;
   url: string;
+  // Optional: add a `source_url` text field in Strapi to show a GitHub link.
+  source_url?: string | null;
+  // Optional: add a `year` number field in Strapi to show when it shipped.
+  year?: number | null;
   coded: boolean | null;
   designed: boolean | null;
   converted_wireframe: boolean | null;
@@ -44,6 +48,15 @@ const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN;
 export function strapiMediaUrl(path: string) {
   if (/^https?:\/\//.test(path)) return path;
   return `${STRAPI_URL}${path}`;
+}
+
+// "Design, Development" style summary of what William did on a project.
+export function projectRoles(project: StrapiProject): string[] {
+  const roles: string[] = [];
+  if (project.designed) roles.push("Design");
+  if (project.coded) roles.push("Development");
+  if (project.converted_wireframe) roles.push("Wireframe conversion");
+  return roles;
 }
 
 // Resolve thumbnail URLs server-side, where STRAPI_URL is actually available —

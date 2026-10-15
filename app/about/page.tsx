@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import AboutIntro from "@/components/AboutIntro";
+import Experience from "@/components/Experience";
+import GrubStackSpotlight from "@/components/GrubStackSpotlight";
 import FavoriteSkills from "@/components/FavoriteSkills";
+import CtaBand from "@/components/CtaBand";
 
 export const metadata: Metadata = {
   title: "About",
@@ -12,7 +15,10 @@ export default function About() {
   return (
     <>
       <AboutIntro />
+      <Experience />
+      <GrubStackSpotlight />
       <FavoriteSkills />
+      <CtaBand />
     </>
   );
 }

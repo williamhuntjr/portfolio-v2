@@ -6,7 +6,7 @@ export default function AboutIntro() {
           Things about me
         </span>
 
-        <h1 className="font-heading font-extrabold text-5xl leading-[1.1] text-ink">
+        <h1 className="font-heading font-extrabold text-4xl md:text-5xl leading-[1.1] text-ink">
           I am versatile.
         </h1>
         <h2 className="font-narrow font-bold text-2xl text-accent">
@@ -25,6 +25,10 @@ export default function AboutIntro() {
             system scripts. I have even built my own Linux distributions
             using the Linux From Scratch book.
           </p>
+          <blockquote className="my-2 border-l-4 border-accent pl-5 font-narrow font-bold text-2xl leading-snug text-ink">
+            &ldquo;I taught myself how to set up a Linux server when I was
+            just 13 years old.&rdquo;
+          </blockquote>
           <p>
             While I continued to learn operating systems, I wrote some HTML
             and read my first programming book, HTML4 for Dummies. Just a few
@@ -37,13 +41,15 @@ export default function AboutIntro() {
               href="https://grubstack.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-semibold text-accent"
+              className="font-semibold text-accent hover:underline underline-offset-4"
             >
               GrubStack
             </a>
             , a software suite I built for food-ordering payments and
             checkout — a Python/Flask API, a dashboard in vanilla React, and
-            a Next.js ordering app.
+            three Next.js apps: an ordering app, a terminal app for cooks to
+            see incoming orders, and a kiosk app for self-checkout from a
+            tablet or kiosk screen at food trucks and small restaurants.
           </p>
         </div>
 
@@ -51,7 +57,7 @@ export default function AboutIntro() {
           href="/William_Hunt_Resume-Latest.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-12 w-fit items-center justify-center rounded-btn bg-accent px-6.5 text-[15px] font-bold text-white mt-2"
+          className="flex h-12 w-fit items-center justify-center rounded-btn bg-accent px-6.5 text-[15px] font-bold text-white transition-colors hover:bg-accent-hover mt-2"
         >
           Download My Resume
         </a>

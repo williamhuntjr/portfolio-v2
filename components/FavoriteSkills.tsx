@@ -49,9 +49,9 @@ export default function FavoriteSkills() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-8 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 w-full">
           {SKILLS.map((skill) => (
-            <div key={skill.title} className="flex gap-4">
+            <div key={skill.title} className="flex gap-4 md:flex-col">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-btn bg-accent-tint">
                 {skill.icon}
               </div>

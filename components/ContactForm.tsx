@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { CONTACT_REASONS } from "@/lib/constants";
 
@@ -56,6 +57,12 @@ export default function ContactForm() {
         <p className="mt-2 text-[15px] text-muted">
           Thanks for reaching out — I&apos;ll get back to you soon.
         </p>
+        <Link
+          href="/my-projects"
+          className="mt-6 inline-block text-sm font-bold text-accent hover:underline underline-offset-4"
+        >
+          Meanwhile, check out my projects &rarr;
+        </Link>
       </div>
     );
   }
@@ -146,7 +153,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="mt-2 flex h-12 w-fit cursor-pointer items-center justify-center rounded-btn bg-accent px-8 text-[15px] font-bold text-white transition-opacity disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-2 flex h-12 w-fit cursor-pointer items-center justify-center rounded-btn bg-accent px-8 text-[15px] font-bold text-white transition enabled:hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
       >
         {status === "submitting" ? "Sending…" : "Send Message"}
       </button>

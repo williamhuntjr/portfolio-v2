@@ -4,7 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import ProjectFilters from "@/components/ProjectFilters";
 import ProjectCard from "@/components/ProjectCard";
 import ProjectPagination from "@/components/ProjectPagination";
-import type { ProjectsResponse, StrapiProject } from "@/lib/strapi";
+import type {
+  ProjectsResponse,
+  StrapiPagination,
+  StrapiProject,
+} from "@/lib/strapi";
 
 function queryKey(page: number, technologies: string[]) {
   return `${page}|${technologies.join(",")}`;
@@ -41,14 +45,15 @@ export default function MyProjectsView({
   const [projects, setProjects] = useState<StrapiProject[]>(
     initialData?.data ?? [],
   );
-  const [pageCount, setPageCount] = useState(
-    initialData?.meta?.pagination?.pageCount ?? 0,
+  const [pagination, setPagination] = useState<StrapiPagination | null>(
+    initialData?.meta?.pagination ?? null,
   );
   const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState(false);
   // Key of the page/filter combination currently shown, so the effect skips
   // refetching what the server already rendered.
   const loadedKey = useRef<string | null>(initialData ? queryKey(1, []) : null);
+  const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const key = queryKey(page, selectedTech);
@@ -70,7 +75,7 @@ export default function MyProjectsView({
         if (!res.ok) throw new Error("Request failed");
         const json = await res.json();
         setProjects(json.data ?? []);
-        setPageCount(json.meta?.pagination?.pageCount ?? 0);
+        setPagination(json.meta?.pagination ?? null);
         loadedKey.current = key;
       } catch (err) {
         if ((err as Error).name !== "AbortError") setError(true);
@@ -92,6 +97,11 @@ export default function MyProjectsView({
     setPage(1);
   }
 
+  function changePage(next: number) {
+    setPage(next);
+    listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   function clearFilters() {
     setSelectedTech([]);
     setPage(1);
@@ -106,6 +116,10 @@ export default function MyProjectsView({
         <h1 className="font-heading font-extrabold text-4xl text-ink mt-2">
           Projects I&apos;ve built and shipped.
         </h1>
+        <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-muted">
+          Websites and applications I&apos;ve designed, built and shipped.
+          Filter by technology to narrow the list.
+        </p>
       </div>
 
       <ProjectFilters
@@ -114,7 +128,18 @@ export default function MyProjectsView({
         onClear={clearFilters}
       />
 
-      <div className="mx-auto w-full max-w-480 px-6 md:px-16">
+      <div
+        ref={listRef}
+        className="mx-auto w-full max-w-480 scroll-mt-6 px-6 md:px-16"
+      >
+        {!loading && !error && pagination && pagination.total > 0 && (
+          <p className="text-sm font-semibold text-muted-2" aria-live="polite">
+            Showing {(page - 1) * pagination.pageSize + 1}–
+            {(page - 1) * pagination.pageSize + projects.length} of{" "}
+            {pagination.total} project{pagination.total === 1 ? "" : "s"}
+          </p>
+        )}
+
         {loading && (
           <>
             <ProjectCardSkeleton />
@@ -152,7 +177,11 @@ export default function MyProjectsView({
       </div>
 
       {!loading && !error && (
-        <ProjectPagination page={page} pageCount={pageCount} onChange={setPage} />
+        <ProjectPagination
+          page={page}
+          pageCount={pagination?.pageCount ?? 0}
+          onChange={changePage}
+        />
       )}
     </div>
   );

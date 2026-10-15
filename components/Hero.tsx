@@ -24,7 +24,7 @@ export default function Hero() {
         <div className="flex items-center gap-4 mt-2">
           <Link
             href="/my-projects"
-            className="flex h-12 items-center justify-center rounded-btn bg-accent px-6.5 text-[15px] font-bold text-white"
+            className="flex h-12 items-center justify-center rounded-btn bg-accent px-6.5 text-[15px] font-bold text-white transition-colors hover:bg-accent-hover"
           >
             View My Projects
           </Link>
@@ -32,7 +32,7 @@ export default function Hero() {
             href="https://github.com/williamhuntjr"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-12 items-center justify-center rounded-btn border-[1.5px] border-ink px-6.5 text-[15px] font-bold text-ink"
+            className="flex h-12 items-center justify-center rounded-btn border-[1.5px] border-ink px-6.5 text-[15px] font-bold text-ink transition-colors hover:bg-ink hover:text-white"
           >
             GitHub
           </a>

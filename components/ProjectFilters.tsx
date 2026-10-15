@@ -19,14 +19,15 @@ export default function ProjectFilters({
           <button
             type="button"
             onClick={onClear}
-            className="cursor-pointer text-sm font-semibold text-accent"
+            className="cursor-pointer text-sm font-semibold text-accent hover:underline underline-offset-4"
           >
             Clear filters
           </button>
         )}
       </div>
 
-      <div className="flex flex-wrap gap-3">
+      {/* One scrolling row on mobile (bleeds to the screen edge), wrapping on desktop. */}
+      <div className="-mx-6 flex gap-3 overflow-x-auto px-6 pb-1 [scrollbar-width:none] md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
         {TECH_OPTIONS.map((tech) => {
           const active = selected.includes(tech);
           return (
@@ -35,7 +36,7 @@ export default function ProjectFilters({
               type="button"
               onClick={() => onToggle(tech)}
               aria-pressed={active}
-              className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition ${
+              className={`shrink-0 cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition ${
                 active
                   ? "border-accent bg-accent text-white"
                   : "border-border bg-white text-muted hover:text-ink hover:shadow-sm"

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import MyProjectsView from "@/components/MyProjectsView";
+import CtaBand from "@/components/CtaBand";
 import {
   fetchProjects,
   resolveThumbnails,
@@ -23,5 +24,10 @@ export default async function MyProjectsPage() {
     // Strapi unreachable — the client view will retry on mount.
   }
 
-  return <MyProjectsView initialData={initialData} />;
+  return (
+    <>
+      <MyProjectsView initialData={initialData} />
+      <CtaBand />
+    </>
+  );
 }

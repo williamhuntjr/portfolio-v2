@@ -3,21 +3,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-
-const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/my-projects", label: "My Projects" },
-  { href: "/lets-connect", label: "Let's Connect" },
-];
+import { NAV_LINKS } from "@/lib/constants";
 
 export default function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
+  // Close the mobile menu on navigation (including back/forward). Adjusting
+  // state during render avoids an extra effect-driven re-render.
+  const [lastPathname, setLastPathname] = useState(pathname);
+  if (pathname !== lastPathname) {
+    setLastPathname(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -59,7 +57,7 @@ export default function Nav() {
           href="https://www.linkedin.com/in/williamhuntjr"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-10 items-center justify-center rounded-btn border-[1.5px] border-border px-4.5 text-sm font-semibold text-ink"
+          className="flex h-10 items-center justify-center rounded-btn border-[1.5px] border-border px-4.5 text-sm font-semibold text-ink transition-colors hover:border-ink"
         >
           LinkedIn
         </a>
@@ -67,7 +65,7 @@ export default function Nav() {
           href="https://github.com/williamhuntjr"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-10 items-center justify-center rounded-btn bg-accent px-4.5 text-sm font-semibold text-white"
+          className="flex h-10 items-center justify-center rounded-btn bg-accent px-4.5 text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
         >
           GitHub
         </a>
@@ -137,7 +135,7 @@ export default function Nav() {
             href="https://www.linkedin.com/in/williamhuntjr"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-11 items-center justify-center rounded-btn border-[1.5px] border-border text-sm font-semibold text-ink"
+            className="flex h-11 items-center justify-center rounded-btn border-[1.5px] border-border text-sm font-semibold text-ink transition-colors hover:border-ink"
           >
             LinkedIn
           </a>
@@ -145,7 +143,7 @@ export default function Nav() {
             href="https://github.com/williamhuntjr"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-11 items-center justify-center rounded-btn bg-accent text-sm font-semibold text-white"
+            className="flex h-11 items-center justify-center rounded-btn bg-accent text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
           >
             GitHub
           </a>
