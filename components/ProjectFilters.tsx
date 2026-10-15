@@ -10,7 +10,7 @@ export default function ProjectFilters({
   onClear: () => void;
 }) {
   return (
-    <div className="flex flex-col gap-4 px-16 py-10">
+    <div className="flex flex-col gap-4 px-6 md:px-16 py-10">
       <div className="flex items-center justify-between">
         <span className="text-[13px] font-bold tracking-wide text-muted-2 uppercase">
           Filter by technology

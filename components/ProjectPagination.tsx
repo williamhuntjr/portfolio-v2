@@ -12,7 +12,7 @@ export default function ProjectPagination({
   const pages = Array.from({ length: pageCount }, (_, i) => i + 1);
 
   return (
-    <div className="flex items-center justify-center gap-2 px-16 py-12">
+    <div className="flex items-center justify-center gap-2 px-6 md:px-16 py-12">
       <button
         type="button"
         onClick={() => onChange(page - 1)}

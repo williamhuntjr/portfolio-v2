@@ -80,7 +80,7 @@ export default function MyProjectsView() {
 
   return (
     <div className="flex flex-col">
-      <div className="px-16 pt-22 pb-8">
+      <div className="px-6 md:px-16 pt-12 md:pt-22 pb-8">
         <span className="text-[13px] font-bold tracking-wide text-muted-2 uppercase">
           My Projects
         </span>
@@ -95,7 +95,7 @@ export default function MyProjectsView() {
         onClear={clearFilters}
       />
 
-      <div className="mx-auto w-full max-w-480 px-16">
+      <div className="mx-auto w-full max-w-480 px-6 md:px-16">
         {loading && (
           <>
             <ProjectCardSkeleton />
