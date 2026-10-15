@@ -27,6 +27,13 @@ const STEPS = [
     subtitle: "ECS, Kubernetes, and beyond",
     body: "I build Jenkins and GitHub Actions pipelines to ship applications to container platforms like ECS and Kubernetes, so deployments stay consistent, fast, and repeatable.",
   },
+  {
+    number: 5,
+    step: "Optimize",
+    title: "I build for search and speed.",
+    subtitle: "SSR, structured data, Core Web Vitals",
+    body: "I render pages on the server, add structured data and clean metadata, and tune Core Web Vitals so search engines can crawl and rank what I build. Through platform migrations, I keep redirects and sitemaps in place to preserve rankings.",
+  },
 ];
 
 export default function MyApproach() {
@@ -41,17 +48,17 @@ export default function MyApproach() {
         </h2>
       </div>
 
-      <ol className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-6">
+      <ol className="grid grid-cols-1 xl:grid-cols-5 gap-8 xl:gap-6">
         {STEPS.map((step, index) => (
           <li
             key={step.number}
-            className="relative flex gap-5 lg:flex-col lg:gap-5"
+            className="relative flex gap-5 xl:flex-col xl:gap-5"
           >
             {index < STEPS.length - 1 && (
               // Connector to the next step: vertical on mobile, horizontal on desktop.
               <span
                 aria-hidden="true"
-                className="absolute left-[17px] top-11 -bottom-6 w-0.5 bg-accent-tint-strong lg:left-12 lg:-right-3 lg:top-[17px] lg:bottom-auto lg:h-0.5 lg:w-auto"
+                className="absolute left-[17px] top-11 -bottom-6 w-0.5 bg-accent-tint-strong xl:left-12 xl:-right-3 xl:top-[17px] xl:bottom-auto xl:h-0.5 xl:w-auto"
               />
             )}
             <span className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-bold text-white">

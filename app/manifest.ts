@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "William Hunt | Full-Stack Developer",
+    name: "William Hunt | Senior Software Engineer",
     short_name: "William Hunt",
     description:
-      "Full-stack developer specializing in React front-ends, Python APIs, and containerized deployments with Docker and Kubernetes.",
+      "Senior software engineer specializing in React and Nuxt front-ends, Python APIs, technical SEO, and containerized deployments with Docker and Kubernetes.",
     start_url: "/",
     display: "standalone",
     background_color: "#f7f9fc",

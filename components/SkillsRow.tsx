@@ -6,11 +6,12 @@ const SKILL_GROUPS = [
     skills: [
       { name: "React", src: "/skills/react.png" },
       { name: "Next.js", src: "/skills/nextjs.png" },
+      { name: "TypeScript", src: "/skills/typescript.png" },
       { name: "Vue.js", src: "/skills/vuejs.png" },
+      { name: "Nuxt", src: "/skills/nuxt.png" },
       { name: "Material UI", src: "/skills/material-ui.png" },
       { name: "Bootstrap", src: "/skills/bootstrap.png" },
       { name: "HTML / CSS / JS", src: "/skills/html-css-js.png" },
-      { name: "jQuery", src: "/skills/jquery.png" },
     ],
   },
   {
@@ -18,7 +19,6 @@ const SKILL_GROUPS = [
     skills: [
       { name: "Python", src: "/skills/python.png" },
       { name: "WordPress", src: "/skills/wordpress.png" },
-      { name: "cPanel", src: "/skills/cpanel.png" },
       { name: "Google Analytics", src: "/skills/google-analytics.png" },
     ],
   },

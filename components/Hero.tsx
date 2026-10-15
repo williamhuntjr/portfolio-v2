@@ -15,7 +15,7 @@ export default function Hero() {
         </h1>
 
         <p className="text-[17px] leading-relaxed text-muted max-w-[520px]">
-          I&apos;m a full-stack developer focused on React and Vue front-ends and
+          I&apos;m a senior software engineer focused on React and Vue front-ends and
           containerized deployments. I write REST APIs in Python, ship with
           Docker and Kubernetes, and automate delivery with Jenkins and
           GitHub Actions.
@@ -48,7 +48,7 @@ export default function Hero() {
             fill
             sizes="360px"
             className="object-cover"
-            priority
+            preload
           />
         </div>
         <div className="absolute bottom-1.5 z-20 flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2 shadow-[0_8px_24px_rgba(20,30,60,0.10)]">

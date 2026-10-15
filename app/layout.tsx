@@ -23,9 +23,9 @@ const openSans = Open_Sans({
 });
 
 const SITE_URL = "https://williamhuntjr.com";
-const SITE_TITLE = "William Hunt | Full-Stack Developer";
+const SITE_TITLE = "William Hunt | Senior Software Engineer";
 const SITE_DESCRIPTION =
-  "Full-stack developer specializing in React front-ends, Python APIs, and containerized deployments with Docker and Kubernetes.";
+  "Senior software engineer specializing in React and Nuxt front-ends, Python APIs, technical SEO, and containerized deployments with Docker and Kubernetes.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -49,6 +49,51 @@ export const metadata: Metadata = {
   },
 };
 
+// Structured data so search engines can identify who the site is about.
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
+      name: "William Hunt",
+      alternateName: "William John Hunt Jr.",
+      jobTitle: "Senior Software Engineer",
+      url: SITE_URL,
+      image: `${SITE_URL}/images/william-hunt.jpg`,
+      sameAs: [
+        "https://www.linkedin.com/in/williamhuntjr",
+        "https://github.com/williamhuntjr",
+      ],
+      worksFor: { "@type": "Organization", name: "Trader Interactive" },
+      address: {
+        "@type": "PostalAddress",
+        addressRegion: "NC",
+        addressCountry: "US",
+      },
+      knowsAbout: [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Vue.js",
+        "Nuxt",
+        "Python",
+        "Docker",
+        "Kubernetes",
+        "AWS",
+        "Technical SEO",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "William Hunt",
+      publisher: { "@id": `${SITE_URL}/#person` },
+    },
+  ],
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -56,6 +101,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${archivo.variable} ${spaceGrotesk.variable} ${openSans.variable} antialiased`}
     >
       <body className="min-h-screen flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(JSON_LD).replace(/</g, "\\u003c"),
+          }}
+        />
         <Nav />
         <main className="flex-1">{children}</main>
         <Footer />

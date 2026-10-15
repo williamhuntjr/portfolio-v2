@@ -30,8 +30,9 @@ function ProjectCardSkeleton() {
 
 // Page and filters live in the URL so every page is server-rendered and
 // reachable by crawlers through plain links.
-function projectsHref(page: number, technologies: string[]) {
+function projectsHref(page: number, technologies: string[], archived: boolean) {
   const params = new URLSearchParams();
+  if (archived) params.set("archived", "1");
   if (page > 1) params.set("page", String(page));
   technologies.forEach((tech) => params.append("technology", tech));
   const query = params.toString();
@@ -43,24 +44,42 @@ export default function MyProjectsView({
   pagination,
   page,
   selectedTech,
+  archived,
+  techOptions,
   error,
 }: {
   projects: StrapiProject[];
   pagination: StrapiPagination | null;
   page: number;
   selectedTech: string[];
+  archived: boolean;
+  techOptions: string[];
   error: boolean;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   // Reflect clicks immediately while the server renders the new list.
-  const [optimistic, setOptimistic] = useOptimistic({ page, selectedTech });
+  const [optimistic, setOptimistic] = useOptimistic({
+    page,
+    selectedTech,
+    archived,
+  });
   const listRef = useRef<HTMLDivElement>(null);
 
-  function navigate(nextPage: number, nextTech: string[]) {
+  function navigate(
+    nextPage: number,
+    nextTech: string[],
+    nextArchived = optimistic.archived,
+  ) {
     startTransition(() => {
-      setOptimistic({ page: nextPage, selectedTech: nextTech });
-      router.push(projectsHref(nextPage, nextTech), { scroll: false });
+      setOptimistic({
+        page: nextPage,
+        selectedTech: nextTech,
+        archived: nextArchived,
+      });
+      router.push(projectsHref(nextPage, nextTech, nextArchived), {
+        scroll: false,
+      });
     });
   }
 
@@ -74,14 +93,31 @@ export default function MyProjectsView({
     );
   }
 
+  function toggleArchived() {
+    navigate(1, optimistic.selectedTech, !optimistic.archived);
+  }
+
   function clearFilters() {
-    navigate(1, []);
+    navigate(1, [], false);
   }
 
   function changePage(next: number) {
     navigate(next, optimistic.selectedTech);
     listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+
+  const hasFilters =
+    optimistic.selectedTech.length > 0 || optimistic.archived;
+
+  const clearButton = (
+    <button
+      type="button"
+      onClick={clearFilters}
+      className="cursor-pointer font-semibold text-accent hover:underline underline-offset-4"
+    >
+      Clear filters
+    </button>
+  );
 
   return (
     <div className="flex flex-col">
@@ -92,27 +128,38 @@ export default function MyProjectsView({
         <h1 className="font-heading font-extrabold text-4xl text-ink mt-2">
           Projects I&apos;ve built and shipped.
         </h1>
-        <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-muted">
+        <p className="mt-3 text-[17px] leading-relaxed text-muted">
           Websites and applications I&apos;ve designed, built and shipped.
           Filter by technology to narrow the list.
         </p>
       </div>
 
       <ProjectFilters
+        options={techOptions}
         selected={optimistic.selectedTech}
+        archived={optimistic.archived}
         onToggle={toggleTech}
-        onClear={clearFilters}
+        onToggleArchived={toggleArchived}
       />
 
       <div
         ref={listRef}
         className="mx-auto w-full max-w-480 scroll-mt-6 px-6 md:px-16"
       >
-        {!isPending && !error && pagination && pagination.total > 0 && (
-          <p className="text-sm font-semibold text-muted-2" aria-live="polite">
-            Showing {(page - 1) * pagination.pageSize + 1}–
-            {(page - 1) * pagination.pageSize + projects.length} of{" "}
-            {pagination.total} project{pagination.total === 1 ? "" : "s"}
+        {!isPending && !error && pagination && projects.length > 0 && (
+          <p className="text-sm text-muted-2">
+            <span className="font-semibold" aria-live="polite">
+              Showing {(page - 1) * pagination.pageSize + 1}–
+              {(page - 1) * pagination.pageSize + projects.length} of{" "}
+              {pagination.total} {archived ? "archived " : ""}project
+              {pagination.total === 1 ? "" : "s"}
+            </span>
+            {hasFilters && (
+              <>
+                <span aria-hidden="true"> &middot; </span>
+                {clearButton}
+              </>
+            )}
           </p>
         )}
 
@@ -138,6 +185,7 @@ export default function MyProjectsView({
             <p className="mt-2 text-[15px] text-muted">
               Try adjusting or clearing your filters.
             </p>
+            {hasFilters && <p className="mt-4 text-[15px]">{clearButton}</p>}
           </div>
         )}
 
@@ -156,7 +204,9 @@ export default function MyProjectsView({
         <ProjectPagination
           page={optimistic.page}
           pageCount={pagination?.pageCount ?? 0}
-          hrefFor={(p) => projectsHref(p, optimistic.selectedTech)}
+          hrefFor={(p) =>
+            projectsHref(p, optimistic.selectedTech, optimistic.archived)
+          }
           onChange={changePage}
         />
       )}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   fetchFeaturedProject,
@@ -21,11 +22,13 @@ export default async function FeaturedProject() {
       <div className="grid grid-cols-1 md:grid-cols-2 rounded-card border border-border bg-white overflow-hidden shadow-[0_12px_32px_rgba(20,30,60,0.06)]">
         <div className="flex items-center justify-center bg-white min-h-75">
           {project.thumbnail ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={strapiMediaUrl(project.thumbnail.url)}
               alt={project.name}
-              className="h-full w-full object-contain"
+              width={project.thumbnail.width ?? 1600}
+              height={project.thumbnail.height ?? 900}
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="h-auto w-full object-contain"
             />
           ) : (
             <svg

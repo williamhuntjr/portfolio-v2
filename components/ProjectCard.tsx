@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { projectRoles, type StrapiProject } from "@/lib/strapi";
 
 export default function ProjectCard({
@@ -17,11 +18,13 @@ export default function ProjectCard({
     >
       <div className="w-full shrink-0 overflow-hidden rounded-card border border-border bg-white md:max-w-180">
         {project.thumbnail ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={project.thumbnail.url}
             alt={project.name}
-            className="w-full object-cover"
+            width={project.thumbnail.width ?? 1600}
+            height={project.thumbnail.height ?? 900}
+            sizes="(min-width: 768px) 720px, 100vw"
+            className="h-auto w-full object-cover"
           />
         ) : (
           <div className="flex aspect-video w-full items-center justify-center bg-accent-tint">

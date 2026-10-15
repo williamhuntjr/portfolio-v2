@@ -4,6 +4,7 @@ import CtaBand from "@/components/CtaBand";
 import { TECH_OPTIONS } from "@/lib/constants";
 import {
   fetchProjects,
+  fetchUsedTechnologies,
   resolveThumbnails,
   type ProjectsResponse,
 } from "@/lib/strapi";
@@ -16,7 +17,8 @@ function parseParams(params: Awaited<SearchParams>) {
   const requested = Array.isArray(raw) ? raw : raw ? [raw] : [];
   // Only accept known filters so arbitrary values never reach the Strapi query.
   const technologies = requested.filter((tech) => TECH_OPTIONS.includes(tech));
-  return { page, technologies };
+  const archived = params.archived === "1";
+  return { page, technologies, archived };
 }
 
 export async function generateMetadata({
@@ -24,15 +26,16 @@ export async function generateMetadata({
 }: {
   searchParams: SearchParams;
 }): Promise<Metadata> {
-  const { page } = parseParams(await searchParams);
+  const { page, archived } = parseParams(await searchParams);
+  const indexedPage = !archived && page > 1;
   return {
     title: page > 1 ? `My Projects – Page ${page}` : "My Projects",
     description:
       "A look at projects William Hunt has built and shipped, filterable by technology.",
-    // Filtered views are variations of the same list; point them at the
-    // unfiltered page so only the paginated URLs get indexed.
+    // Filtered and archived views are variations of the same list; point them
+    // at the main list so only its paginated URLs get indexed.
     alternates: {
-      canonical: page > 1 ? `/my-projects?page=${page}` : "/my-projects",
+      canonical: indexedPage ? `/my-projects?page=${page}` : "/my-projects",
     },
   };
 }
@@ -42,15 +45,31 @@ export default async function MyProjectsPage({
 }: {
   searchParams: SearchParams;
 }) {
-  const { page, technologies } = parseParams(await searchParams);
+  const { page, technologies, archived } = parseParams(await searchParams);
 
-  let data: ProjectsResponse | null = null;
-  try {
-    const response = await fetchProjects({ page, technologies });
-    data = { ...response, data: resolveThumbnails(response.data) };
-  } catch {
-    // Strapi unreachable — the view shows its error state.
-  }
+  const [projectsResult, techResult] = await Promise.allSettled([
+    fetchProjects({ page, technologies, archived }),
+    fetchUsedTechnologies({ archived }),
+  ]);
+
+  // Strapi unreachable — the view shows its error state.
+  const data: ProjectsResponse | null =
+    projectsResult.status === "fulfilled"
+      ? {
+          ...projectsResult.value,
+          data: resolveThumbnails(projectsResult.value.data),
+        }
+      : null;
+
+  // Hide chips no project in this view uses; keep any already selected so
+  // they can still be turned off. Fall back to every option on failure.
+  const available =
+    techResult.status === "fulfilled"
+      ? TECH_OPTIONS.filter(
+          (tech) =>
+            techResult.value.includes(tech) || technologies.includes(tech),
+        )
+      : TECH_OPTIONS;
 
   return (
     <>
@@ -59,6 +78,8 @@ export default async function MyProjectsPage({
         pagination={data?.meta?.pagination ?? null}
         page={page}
         selectedTech={technologies}
+        archived={archived}
+        techOptions={available}
         error={!data}
       />
       <CtaBand />

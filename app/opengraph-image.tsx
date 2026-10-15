@@ -63,7 +63,7 @@ export default function OpengraphImage() {
             maxWidth: "900px",
           }}
         >
-          Full-Stack Developer
+          Senior Software Engineer
         </div>
 
         <div

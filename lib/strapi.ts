@@ -70,14 +70,31 @@ export function resolveThumbnails(projects: StrapiProject[]): StrapiProject[] {
   }));
 }
 
+// Archived = discontinued projects; the default list shows only live ones.
+function applyArchivedFilter(params: URLSearchParams, archived: boolean) {
+  if (archived) {
+    params.set("filters[is_discontinued][$eq]", "true");
+  } else {
+    // Treat an unset flag as live, not just an explicit false.
+    params.set("filters[$or][0][is_discontinued][$null]", "true");
+    params.set("filters[$or][1][is_discontinued][$eq]", "false");
+  }
+}
+
+function strapiHeaders(): HeadersInit {
+  return STRAPI_API_TOKEN ? { Authorization: `Bearer ${STRAPI_API_TOKEN}` } : {};
+}
+
 export async function fetchProjects({
   page = 1,
   pageSize = 6,
   technologies = [],
+  archived = false,
 }: {
   page?: number;
   pageSize?: number;
   technologies?: string[];
+  archived?: boolean;
 }): Promise<ProjectsResponse> {
   const params = new URLSearchParams();
   params.set("pagination[page]", String(page));
@@ -86,11 +103,10 @@ export async function fetchProjects({
   technologies.forEach((tech, i) => {
     params.append(`filters[technology][name][$in][${i}]`, tech);
   });
+  applyArchivedFilter(params, archived);
 
   const res = await fetch(`${STRAPI_URL}/api/projects?${params.toString()}`, {
-    headers: STRAPI_API_TOKEN
-      ? { Authorization: `Bearer ${STRAPI_API_TOKEN}` }
-      : {},
+    headers: strapiHeaders(),
     cache: "no-store",
   });
 
@@ -99,6 +115,32 @@ export async function fetchProjects({
   }
 
   return res.json();
+}
+
+// Technologies used by at least one live (or archived) project, so the
+// filters never offer a choice that returns nothing.
+export async function fetchUsedTechnologies({
+  archived = false,
+}: {
+  archived?: boolean;
+}): Promise<string[]> {
+  const params = new URLSearchParams();
+  params.set("pagination[pageSize]", "100");
+  params.set("fields[0]", "documentId");
+  params.set("populate[technology]", "true");
+  applyArchivedFilter(params, archived);
+
+  const res = await fetch(`${STRAPI_URL}/api/projects?${params.toString()}`, {
+    headers: strapiHeaders(),
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch technologies: ${res.status}`);
+  }
+
+  const json: { data: Pick<StrapiProject, "technology">[] } = await res.json();
+  return [...new Set(json.data.flatMap((p) => p.technology.map((t) => t.name)))];
 }
 
 export async function fetchFeaturedProject(): Promise<StrapiProject | null> {
