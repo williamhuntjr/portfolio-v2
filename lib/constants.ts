@@ -10,6 +10,7 @@ export const TECH_OPTIONS = [
   "Angular",
   "BoldGrid",
   "Bootstrap",
+  "cPanel",
   "Docker",
   "Kubernetes",
   "Linux",

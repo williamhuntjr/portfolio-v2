@@ -82,7 +82,6 @@ export async function fetchProjects({
   const params = new URLSearchParams();
   params.set("pagination[page]", String(page));
   params.set("pagination[pageSize]", String(pageSize));
-  params.set("sort", "is_discontinued:asc");
   params.set("populate", "*");
   technologies.forEach((tech, i) => {
     params.append(`filters[technology][name][$in][${i}]`, tech);
