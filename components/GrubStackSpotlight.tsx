@@ -1,34 +1,6 @@
 import Image from "next/image";
-
-const APPS = [
-  {
-    name: "REST API",
-    tech: "Python / Flask",
-    body: "Powers every app in the suite, with a payment layer that processes orders through Square or Stripe.",
-  },
-  {
-    name: "Dashboard",
-    tech: "React",
-    body: "Where restaurants configure payment integrations, deploy their apps, and manage their subscription.",
-  },
-  {
-    name: "Ordering app",
-    tech: "Next.js",
-    body: "Customer-facing online ordering, server-side rendered for speed and search visibility.",
-  },
-  {
-    name: "Terminal app",
-    tech: "Next.js",
-    body: "Shows cooks incoming orders in the kitchen, refreshed every minute.",
-  },
-  {
-    name: "Kiosk app",
-    tech: "Next.js",
-    body: "Self-checkout from a tablet or kiosk screen for food trucks and small restaurants.",
-  },
-];
-
-const INFRA = ["Kubernetes", "Helm", "Jenkins", "Private Docker registry", "Flyway"];
+import Link from "next/link";
+import { GRUBSTACK_APPS, GRUBSTACK_INFRA } from "@/lib/grubstack";
 
 export default function GrubStackSpotlight() {
   return (
@@ -42,23 +14,24 @@ export default function GrubStackSpotlight() {
             GrubStack
           </h2>
           <p className="text-[17px] leading-relaxed text-muted">
-            A subscription SaaS suite for food ordering that I founded and run
-            end to end — from the Kubernetes cluster it deploys to, through to
-            the payment integrations restaurants rely on.
+            A subscription SaaS suite for food ordering that I founded and
+            built end to end — from the Kubernetes cluster it deploys to,
+            through to the Square and Stripe payment integrations.
           </p>
         </div>
 
         <Image
-          src="/images/grubstack-preview.webp"
-          alt="GrubStack's terminal app on a tablet, the dashboard on a desktop monitor, and the ordering app on a phone"
-          width={1672}
-          height={782}
+          // Hard-coded Strapi upload for now; move to a CMS field later.
+          src="https://api.williamhuntjr.com/uploads/grubstack_6d5be43ba5.png"
+          alt="The grubstack.app website shown on a laptop, desktop monitor, tablet and phone"
+          width={1857}
+          height={847}
           sizes="(min-width: 1024px) 1024px, 100vw"
-          className="mt-10 h-auto w-full"
+          className="h-auto w-full"
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {APPS.map((app) => (
+          {GRUBSTACK_APPS.map((app) => (
             <div
               key={app.name}
               className="flex flex-col gap-2 rounded-card border border-border bg-white p-6"
@@ -85,7 +58,7 @@ export default function GrubStackSpotlight() {
             <span className="mr-1 text-sm font-semibold text-muted-2">
               Runs on
             </span>
-            {INFRA.map((item) => (
+            {GRUBSTACK_INFRA.map((item) => (
               <span
                 key={item}
                 className="rounded-full bg-ink px-3.5 py-1.5 text-xs font-bold text-white"
@@ -94,14 +67,22 @@ export default function GrubStackSpotlight() {
               </span>
             ))}
           </div>
-          <a
-            href="https://grubstack.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 text-sm font-bold text-accent hover:underline underline-offset-4"
-          >
-            Visit grubstack.app &#8599;
-          </a>
+          <div className="flex shrink-0 flex-wrap gap-x-6 gap-y-2">
+            <Link
+              href="/grubstack"
+              className="text-sm font-bold text-accent hover:underline underline-offset-4"
+            >
+              Read the case study &rarr;
+            </Link>
+            <a
+              href="https://grubstack.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-bold text-accent hover:underline underline-offset-4"
+            >
+              Visit grubstack.app &#8599;
+            </a>
+          </div>
         </div>
       </div>
     </section>

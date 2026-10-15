@@ -19,6 +19,8 @@ export interface StrapiProject {
   url: string;
   // Optional: add a `source_url` text field in Strapi to show a GitHub link.
   source_url?: string | null;
+  // A page on this site ("/grubstack") or an external URL.
+  case_study_url?: string | null;
   // Optional: add a `year` number field in Strapi to show when it shipped.
   year?: number | null;
   coded: boolean | null;

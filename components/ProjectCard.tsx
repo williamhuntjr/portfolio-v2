@@ -1,4 +1,5 @@
 import Image from "next/image";
+import CaseStudyLink from "@/components/CaseStudyLink";
 import { projectRoles, type StrapiProject } from "@/lib/strapi";
 
 export default function ProjectCard({
@@ -85,8 +86,13 @@ export default function ProjectCard({
           ))}
         </div>
 
-        {((!project.is_discontinued && project.url) || project.source_url) && (
+        {((!project.is_discontinued && project.url) ||
+          project.source_url ||
+          project.case_study_url) && (
           <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
+            {project.case_study_url && (
+              <CaseStudyLink href={project.case_study_url} />
+            )}
             {!project.is_discontinued && project.url && (
               <a
                 href={project.url}

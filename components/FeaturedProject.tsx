@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import CaseStudyLink from "@/components/CaseStudyLink";
 import {
   fetchFeaturedProject,
   projectRoles,
@@ -86,6 +87,9 @@ export default async function FeaturedProject() {
             ))}
           </div>
           <div className="mt-2.5 flex flex-wrap gap-x-6 gap-y-2">
+            {project.case_study_url && (
+              <CaseStudyLink href={project.case_study_url} />
+            )}
             {!project.is_discontinued && project.url && (
               <a
                 href={project.url}

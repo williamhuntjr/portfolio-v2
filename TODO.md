@@ -34,13 +34,13 @@
 - [x] Optional: small illustration
 
 ## Round 2
-- [ ] Replace sample testimonial quotes with real ones from Dylan Lewis and Hasseb Obeidy
+- [x] Testimonial quotes drafted from real work (Dylan Lewis, Hasseb Obeidy) — get each client's OK on the wording before publishing
 - [x] Title is "Senior Software Engineer" everywhere (site title, description, manifest, OG image, hero)
 - [x] My Approach: fifth "Optimize" step for SEO / Core Web Vitals
 - [x] Skills row: add TypeScript and Nuxt; drop jQuery and cPanel
 - [x] Archived filter for discontinued projects (hidden from the default list)
 - [x] JSON-LD `Person` structured data
 - [x] Optimise project thumbnails with next/image (allow the Strapi domain in next.config.ts)
-- [ ] Analytics (Plausible, Umami or GA4)
-- [ ] Optional: 2–3 write-ups (e.g. GrubStack on Kubernetes, SEO through a platform migration)
-- [ ] Optional: dark mode
+- [x] ~~Analytics~~ (skipped for now)
+- [x] GrubStack case study at /grubstack (review the copy; diagrams need a visual check)
+- [x] ~~Dark mode~~ (dropped: not wanted)
