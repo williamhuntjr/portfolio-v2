@@ -1,14 +1,14 @@
-// SAMPLE DATA — replace with real quotes (and get permission to use them).
+// Drafted from real client work — confirm the wording with each client before publishing.
 const TESTIMONIALS = [
   {
     quote:
-      "William took our deployment process from a half-day manual checklist to a pipeline that ships in minutes. He's the person you want when something has to work on the first try.",
+      "William took the static HTML website I'd made with ChatGPT and turned it into a custom WordPress theme. Now it's much easier for me to make changes to my website on my own.",
     name: "Dylan Lewis",
     role: "Founder, Cape Henry Mechanical",
   },
   {
     quote:
-      "He's equally comfortable in a React component and a Kubernetes manifest, and he explains both clearly to people who aren't. Communication was never an issue.",
+      "Our Next.js website was poorly built when William took it over. He cleaned up the code and set up automated deployments with Supabase and Vercel.",
     name: "Hasseb Obeidy",
     role: "Owner, Auto and All Automotive",
   },
