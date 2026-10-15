@@ -8,17 +8,63 @@ import {
 } from "@/components/GrubStackDiagrams";
 import { GRUBSTACK_APPS, GRUBSTACK_INFRA } from "@/lib/grubstack";
 
+const TITLE = "GrubStack Case Study";
+const DESCRIPTION =
+  "How William Hunt designed and built GrubStack: a dedicated-tenant SaaS suite that gives food trucks and small restaurants affordable, modern order processing.";
+
 export const metadata: Metadata = {
-  title: "GrubStack Case Study",
-  description:
-    "How William Hunt designed and built GrubStack: a dedicated-tenant SaaS suite that gives food trucks and small restaurants affordable, modern order processing.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/grubstack" },
+  // Page-level openGraph replaces the layout's entirely, so restate the
+  // shared fields; the image comes from ./opengraph-image.tsx.
+  openGraph: {
+    title: `${TITLE} | William Hunt`,
+    description: DESCRIPTION,
+    url: "/grubstack",
+    siteName: "William Hunt",
+    type: "article",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${TITLE} | William Hunt`,
+    description: DESCRIPTION,
+  },
 };
 
 const FACTS = [
-  { label: "Role", value: "Founder & sole engineer" },
-  { label: "Timeline", value: "Sep 2022 – Present" },
-  { label: "Status", value: "Preparing for launch" },
+  {
+    label: "Role",
+    value: "Founder & sole engineer",
+    icon: (
+      <>
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" />
+      </>
+    ),
+  },
+  {
+    label: "Timeline",
+    value: "Sep 2022 – Present",
+    icon: (
+      <>
+        <rect x="3" y="4.5" width="18" height="16" rx="2" />
+        <path d="M3 9.5h18M8 2.5v4M16 2.5v4" />
+      </>
+    ),
+  },
+  {
+    label: "Status",
+    value: "Preparing for launch",
+    icon: (
+      <>
+        <path d="M12 15l-3-3c1.5-4.5 4.5-8 10-9-1 5.5-4.5 8.5-9 10" />
+        <path d="M9 12l-4-.5L7.5 8.5h4M12 15l.5 4 3-2.5v-4" />
+        <path d="M6.5 17.5c-1.5.5-2.5 2-2.5 3 1 0 2.5-1 3-2.5" />
+      </>
+    ),
+  },
 ];
 
 function Section({
@@ -26,11 +72,15 @@ function Section({
   title,
   children,
   tinted = false,
+  wide = false,
 }: {
   eyebrow: string;
   title: string;
   children: React.ReactNode;
   tinted?: boolean;
+  // Use the full page width (for card grids and diagrams) instead of the
+  // narrower reading column.
+  wide?: boolean;
 }) {
   return (
     <section
@@ -38,7 +88,9 @@ function Section({
         tinted ? "bg-background" : "bg-white"
       }`}
     >
-      <div className="container-page flex flex-col gap-6">
+      <div
+        className={`flex flex-col gap-6 ${wide ? "w-full" : "container-page"}`}
+      >
         <div className="flex flex-col gap-2">
           <span className="text-[13px] font-bold tracking-wide text-muted-2 uppercase">
             {eyebrow}
@@ -80,18 +132,38 @@ export default function GrubStackCaseStudy() {
             it.
           </p>
 
-          <dl className="grid grid-cols-1 gap-px overflow-hidden rounded-card border border-border bg-border sm:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-card border border-border bg-border sm:grid-cols-3">
             {FACTS.map((fact) => (
-              <div key={fact.label} className="flex flex-col gap-0.5 bg-white px-5 py-4">
-                <dt className="text-xs font-bold tracking-wide text-muted-2 uppercase">
-                  {fact.label}
-                </dt>
-                <dd className="text-[15px] font-semibold text-ink">
-                  {fact.value}
-                </dd>
-              </div>
+              <li
+                key={fact.label}
+                className="flex items-center gap-4 bg-white px-5 py-4"
+              >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-btn bg-accent-tint">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--accent)"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    {fact.icon}
+                  </svg>
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-xs font-bold tracking-wide text-muted-2 uppercase">
+                    {fact.label}
+                  </span>
+                  <span className="text-[15px] font-semibold text-ink">
+                    {fact.value}
+                  </span>
+                </div>
+              </li>
             ))}
-          </dl>
+          </ul>
 
           <Image
             src="/images/grubstack-preview.webp"
@@ -133,7 +205,7 @@ export default function GrubStackCaseStudy() {
         </Prose>
       </Section>
 
-      <Section eyebrow="The suite" title="Five apps, one platform.">
+      <Section eyebrow="The suite" title="Five apps, one platform." wide>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {GRUBSTACK_APPS.map((app) => (
             <div
@@ -156,7 +228,7 @@ export default function GrubStackCaseStudy() {
         </div>
       </Section>
 
-      <Section eyebrow="Onboarding" title="From sign-up to live." tinted>
+      <Section eyebrow="Onboarding" title="From sign-up to live." tinted wide>
         <Prose>
           <p>
             Subscribing, connecting payments and deploying a restaurant&apos;s
@@ -167,7 +239,7 @@ export default function GrubStackCaseStudy() {
         <ProvisioningFlow />
       </Section>
 
-      <Section eyebrow="Ordering" title="The life of an order.">
+      <Section eyebrow="Ordering" title="The life of an order." wide>
         <Prose>
           <p>
             Once a restaurant is live, an order moves through the suite from

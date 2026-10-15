@@ -37,6 +37,19 @@ export default function Hero() {
             GitHub
           </a>
         </div>
+
+        <Link
+          href="/grubstack"
+          className="group flex w-fit items-center gap-2 text-[15px] font-semibold text-muted transition-colors hover:text-ink"
+        >
+          <span className="rounded-full bg-accent-tint px-2.5 py-0.5 text-xs font-bold text-accent">
+            New
+          </span>
+          Read the GrubStack case study
+          <span className="text-accent transition-transform group-hover:translate-x-0.5">
+            &rarr;
+          </span>
+        </Link>
       </div>
 
       <div className="relative flex items-center justify-center min-h-[460px]">

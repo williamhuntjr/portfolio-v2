@@ -5,7 +5,7 @@ function FlowArrow() {
   return (
     <div
       aria-hidden="true"
-      className="flex shrink-0 items-center justify-center py-1 text-accent lg:px-1 lg:py-0"
+      className="flex shrink-0 items-center justify-center py-1 text-accent xl:px-1 xl:py-0"
     >
       <svg
         width="20"
@@ -16,7 +16,7 @@ function FlowArrow() {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="rotate-90 lg:rotate-0"
+        className="rotate-90 xl:rotate-0"
       >
         <path d="M5 12h14M13 6l6 6-6 6" />
       </svg>
@@ -57,7 +57,7 @@ function Flow({
   return (
     <figure className="rounded-card border border-border bg-background p-4 md:p-6">
       <figcaption className="sr-only">{label}</figcaption>
-      <div className="flex flex-col lg:flex-row lg:items-stretch">
+      <div className="flex flex-col xl:flex-row xl:items-stretch">
         {steps.map((step, index) => (
           <div key={index} className="contents">
             {index > 0 && <FlowArrow />}
