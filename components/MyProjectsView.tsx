@@ -1,18 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useOptimistic, useRef, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import ProjectFilters from "@/components/ProjectFilters";
 import ProjectCard from "@/components/ProjectCard";
 import ProjectPagination from "@/components/ProjectPagination";
-import type {
-  ProjectsResponse,
-  StrapiPagination,
-  StrapiProject,
-} from "@/lib/strapi";
-
-function queryKey(page: number, technologies: string[]) {
-  return `${page}|${technologies.join(",")}`;
-}
+import type { StrapiPagination, StrapiProject } from "@/lib/strapi";
 
 function ProjectCardSkeleton() {
   return (
@@ -35,76 +28,59 @@ function ProjectCardSkeleton() {
   );
 }
 
+// Page and filters live in the URL so every page is server-rendered and
+// reachable by crawlers through plain links.
+function projectsHref(page: number, technologies: string[]) {
+  const params = new URLSearchParams();
+  if (page > 1) params.set("page", String(page));
+  technologies.forEach((tech) => params.append("technology", tech));
+  const query = params.toString();
+  return query ? `/my-projects?${query}` : "/my-projects";
+}
+
 export default function MyProjectsView({
-  initialData,
+  projects,
+  pagination,
+  page,
+  selectedTech,
+  error,
 }: {
-  initialData: ProjectsResponse | null;
+  projects: StrapiProject[];
+  pagination: StrapiPagination | null;
+  page: number;
+  selectedTech: string[];
+  error: boolean;
 }) {
-  const [page, setPage] = useState(1);
-  const [selectedTech, setSelectedTech] = useState<string[]>([]);
-  const [projects, setProjects] = useState<StrapiProject[]>(
-    initialData?.data ?? [],
-  );
-  const [pagination, setPagination] = useState<StrapiPagination | null>(
-    initialData?.meta?.pagination ?? null,
-  );
-  const [loading, setLoading] = useState(!initialData);
-  const [error, setError] = useState(false);
-  // Key of the page/filter combination currently shown, so the effect skips
-  // refetching what the server already rendered.
-  const loadedKey = useRef<string | null>(initialData ? queryKey(1, []) : null);
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  // Reflect clicks immediately while the server renders the new list.
+  const [optimistic, setOptimistic] = useOptimistic({ page, selectedTech });
   const listRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const key = queryKey(page, selectedTech);
-    if (key === loadedKey.current) return;
-
-    const controller = new AbortController();
-
-    async function load() {
-      setLoading(true);
-      setError(false);
-      try {
-        const params = new URLSearchParams();
-        params.set("page", String(page));
-        selectedTech.forEach((tech) => params.append("technology", tech));
-
-        const res = await fetch(`/api/projects?${params.toString()}`, {
-          signal: controller.signal,
-        });
-        if (!res.ok) throw new Error("Request failed");
-        const json = await res.json();
-        setProjects(json.data ?? []);
-        setPagination(json.meta?.pagination ?? null);
-        loadedKey.current = key;
-      } catch (err) {
-        if ((err as Error).name !== "AbortError") setError(true);
-      } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    load();
-    return () => controller.abort();
-  }, [page, selectedTech]);
-
-  function toggleTech(tech: string) {
-    setSelectedTech((prev) =>
-      prev.includes(tech) ? prev.filter((t) => t !== tech) : [...prev, tech],
-    );
-    setPage(1);
+  function navigate(nextPage: number, nextTech: string[]) {
+    startTransition(() => {
+      setOptimistic({ page: nextPage, selectedTech: nextTech });
+      router.push(projectsHref(nextPage, nextTech), { scroll: false });
+    });
   }
 
-  function changePage(next: number) {
-    setPage(next);
-    listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  function toggleTech(tech: string) {
+    const current = optimistic.selectedTech;
+    navigate(
+      1,
+      current.includes(tech)
+        ? current.filter((t) => t !== tech)
+        : [...current, tech],
+    );
   }
 
   function clearFilters() {
-    setSelectedTech([]);
-    setPage(1);
+    navigate(1, []);
+  }
+
+  function changePage(next: number) {
+    navigate(next, optimistic.selectedTech);
+    listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   return (
@@ -123,7 +99,7 @@ export default function MyProjectsView({
       </div>
 
       <ProjectFilters
-        selected={selectedTech}
+        selected={optimistic.selectedTech}
         onToggle={toggleTech}
         onClear={clearFilters}
       />
@@ -132,7 +108,7 @@ export default function MyProjectsView({
         ref={listRef}
         className="mx-auto w-full max-w-480 scroll-mt-6 px-6 md:px-16"
       >
-        {!loading && !error && pagination && pagination.total > 0 && (
+        {!isPending && !error && pagination && pagination.total > 0 && (
           <p className="text-sm font-semibold text-muted-2" aria-live="polite">
             Showing {(page - 1) * pagination.pageSize + 1}–
             {(page - 1) * pagination.pageSize + projects.length} of{" "}
@@ -140,7 +116,7 @@ export default function MyProjectsView({
           </p>
         )}
 
-        {loading && (
+        {isPending && (
           <>
             <ProjectCardSkeleton />
             <ProjectCardSkeleton />
@@ -148,13 +124,13 @@ export default function MyProjectsView({
           </>
         )}
 
-        {!loading && error && (
+        {!isPending && error && (
           <p className="py-20 text-center text-[15px] text-muted">
             Something went wrong loading projects. Please try again shortly.
           </p>
         )}
 
-        {!loading && !error && projects.length === 0 && (
+        {!isPending && !error && projects.length === 0 && (
           <div className="py-20 text-center">
             <h2 className="font-heading font-extrabold text-2xl text-ink">
               No projects found.
@@ -165,7 +141,7 @@ export default function MyProjectsView({
           </div>
         )}
 
-        {!loading &&
+        {!isPending &&
           !error &&
           projects.map((project, index) => (
             <ProjectCard
@@ -176,10 +152,11 @@ export default function MyProjectsView({
           ))}
       </div>
 
-      {!loading && !error && (
+      {!error && (
         <ProjectPagination
-          page={page}
+          page={optimistic.page}
           pageCount={pagination?.pageCount ?? 0}
+          hrefFor={(p) => projectsHref(p, optimistic.selectedTech)}
           onChange={changePage}
         />
       )}

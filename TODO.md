@@ -24,7 +24,7 @@
 - [x] Result count ("Showing 6 of 14 projects")
 - [x] Scroll to top of the list on page change
 - [x] Filter chips: single horizontally scrolling row on mobile
-- [ ] Per-project case study pages (`/my-projects/[slug]`), which also lets crawlers reach every project
+- [x] ~~Per-project case study pages~~ (dropped: most projects are simple WordPress/Next.js sites)
 
 ## Let's Connect
 - [x] Desktop side column: email, LinkedIn, time zone/location, response time, availability, resume download
