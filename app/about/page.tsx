@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import AboutIntro from "@/components/AboutIntro";
 import Experience from "@/components/Experience";
 import GrubStackSpotlight from "@/components/GrubStackSpotlight";
+import InstoraSpotlight from "@/components/InstoraSpotlight";
 import FavoriteSkills from "@/components/FavoriteSkills";
 import CtaBand from "@/components/CtaBand";
 
@@ -17,6 +18,7 @@ export default function About() {
       <AboutIntro />
       <Experience />
       <GrubStackSpotlight />
+      <InstoraSpotlight />
       <FavoriteSkills />
       <CtaBand />
     </>
