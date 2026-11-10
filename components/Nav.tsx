@@ -35,7 +35,7 @@ export default function Nav() {
         </span>
       </Link>
 
-      <nav className="hidden md:flex items-center gap-2">
+      <nav className="hidden min-[1025px]:flex items-center gap-2">
         {NAV_LINKS.map((link) => {
           const active = pathname === link.href;
           return (
@@ -52,7 +52,7 @@ export default function Nav() {
         })}
       </nav>
 
-      <div className="hidden md:flex items-center gap-3">
+      <div className="hidden min-[1025px]:flex items-center gap-3">
         <a
           href="https://www.linkedin.com/in/williamhuntjr"
           target="_blank"
@@ -76,7 +76,7 @@ export default function Nav() {
         onClick={() => setOpen(true)}
         aria-label="Open menu"
         aria-expanded={open}
-        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-btn md:hidden"
+        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-btn min-[1025px]:hidden"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round">
           <path d="M3 6h18" />
@@ -86,14 +86,14 @@ export default function Nav() {
       </button>
 
       <div
-        className={`fixed inset-0 z-40 bg-ink/40 transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 z-40 bg-ink/40 transition-opacity duration-300 min-[1025px]:hidden ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={() => setOpen(false)}
       />
 
       <div
-        className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-xs flex-col gap-8 bg-white p-6 shadow-[-8px_0_32px_rgba(20,30,60,0.12)] transition-transform duration-300 ease-out md:hidden ${
+        className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-xs flex-col gap-8 bg-white p-6 shadow-[-8px_0_32px_rgba(20,30,60,0.12)] transition-transform duration-300 ease-out min-[1025px]:hidden ${
           open ? "translate-x-0" : "translate-x-full pointer-events-none"
         }`}
       >

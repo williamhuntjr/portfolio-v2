@@ -13,18 +13,18 @@ export default function ProjectCard({
 
   return (
     <div
-      className={`flex flex-col gap-10 border-b border-border py-12 md:items-center ${
-        reversed ? "md:flex-row-reverse" : "md:flex-row"
+      className={`flex flex-col gap-10 border-b border-border py-12 xl:items-center ${
+        reversed ? "xl:flex-row-reverse" : "xl:flex-row"
       }`}
     >
-      <div className="w-full shrink-0 overflow-hidden rounded-card border border-border bg-white md:max-w-180">
+      <div className="w-full shrink-0 overflow-hidden rounded-card border border-border bg-white xl:max-w-180">
         {project.thumbnail ? (
           <Image
             src={project.thumbnail.url}
             alt={project.name}
             width={project.thumbnail.width ?? 1600}
             height={project.thumbnail.height ?? 900}
-            sizes="(min-width: 768px) 720px, 100vw"
+            sizes="(min-width: 1280px) 720px, 100vw"
             className="h-auto w-full object-cover"
           />
         ) : (

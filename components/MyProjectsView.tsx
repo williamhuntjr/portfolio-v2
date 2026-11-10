@@ -9,8 +9,8 @@ import type { StrapiPagination, StrapiProject } from "@/lib/strapi";
 
 function ProjectCardSkeleton() {
   return (
-    <div className="flex flex-col gap-10 border-b border-border py-12 animate-pulse md:flex-row md:items-center">
-      <div className="w-full shrink-0 md:max-w-180">
+    <div className="flex flex-col gap-10 border-b border-border py-12 animate-pulse xl:flex-row xl:items-center">
+      <div className="w-full shrink-0 xl:max-w-180">
         <div className="aspect-video w-full rounded-card bg-border" />
       </div>
       <div className="flex flex-1 flex-col gap-3">
